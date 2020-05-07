@@ -30,7 +30,7 @@ options: #세팅들
 	# token = 카린봇 토큰
 	# name = 카린봇 이름
 	
-	token: 
+	token: 'your token'
 	name: KaRin Bot v2
 
 On script load:
@@ -47,7 +47,7 @@ On script load:
 	#set {server::702363259990442044} to "702363259990442044"
 	
 On skript load:
-	login to "{@token}" with the name "{@name}"
+	login to "{@token}" with the name "{@name}" # 옵션의 name이라는 이름으로 token이라는 토큰에 로그인 함.
 	set {krbad::624274923455512577} to "624274923455512577"
 	set {krbad2::624274923455512577} to "624274923455512577"
 	set {krbad::539590846014685185} to "539590846014685185"
@@ -73,9 +73,9 @@ on skript unload:
 		send last created embed to channel with id "{@hunnetcid}" with "{@name}"
 
 #every 1 second:
-#	subtract 1 from {counter::*}
+#	subtract 1 from {counter::*}               타이머 하려다가 망한거
 	
-every 20 seconds:
+every 20 seconds:                          # 자동 게임 설정 (성공적이지만 시작이 느림)
 	add 1 to {count::mark}
 	loop {count::*}:
 		add 1 to {count::mark}
@@ -85,7 +85,7 @@ every 20 seconds:
 		wait 10 seconds
 	
 			
-discord command 동의:
+discord command 동의: # 가입/서버등록 동의
 	trigger:
 		if {동의::%discord id of event-user%} is false:
 			set {동의::%discord id of event-user%} to true
@@ -109,7 +109,7 @@ discord command 동의:
 		else:
 			stop
 				
-discord command 거절:
+discord command 거절: # 가입/서버등록 거절
 	trigger:
 		if {거절::%discord id of event-user%} is false:
 			set {거절::%discord id of event-user%} to true
@@ -131,7 +131,7 @@ discord command 거절:
 		else:
 			stop
 				
-discord command 카린이여 [<text>] [<text>] [<text>] [<integer>]:
+discord command 카린이여 [<text>] [<text>] [<text>] [<integer>]: #관리자 명령어
 	trigger:
 		if {krbad::%discord id of event-user%} is "624274923455512577" or "451335803038203904":
 			if arg 1 is "도와주거라":
@@ -468,6 +468,9 @@ discord command 카린이여 [<text>] [<text>] [<text>] [<integer>]:
 				set the description of embed to "You are not have permission!"
 				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 				reply with last created embed
+				
+# 여기는 사용률이 저조하고 코드가 난잡하고 수정할 기미가 안보여서 주석처리.
+# 추후 수정예정.
 					
 #discord command _어드민로그인 [<text>] [<text>]:
 #	trigger:
@@ -589,6 +592,7 @@ discord command 카린이여 [<text>] [<text>] [<text>] [<integer>]:
 #						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 #						reply with last created embed
 
+#뮤직시스템 노래끝날때
 on track end seen by "{@name}":
 	remove "%{nowmusic::1}%DCISGREAT%{nowmusic::2}%" from {trr::*}
 	if {trr::*} is set:
@@ -611,7 +615,7 @@ on track end seen by "{@name}":
 		delete {rresults::*}
 		delete {nowmusic::*}
 
-discord command +m.pause:
+discord command +m.pause: # 일시정지
 	trigger:
 		if {krbad::%discord id of event-user%} is "624274923455512577":
 			pause the track event-bot is playing
@@ -624,7 +628,7 @@ discord command +m.pause:
 				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 				reply with last created embed
 
-discord command +m.resume:
+discord command +m.resume: # 다시재생
 	trigger:
 		if {krbad::%discord id of event-user%} is "624274923455512577":
 			resume the track event-bot is playing
@@ -637,7 +641,7 @@ discord command +m.resume:
 				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 				reply with last created embed
 
-discord command +m.info:
+discord command +m.info: # 현재 노래 (작동X)
 	trigger:
 		if event-bot is playing:
 			make embed:
@@ -650,7 +654,7 @@ discord command +m.info:
 				set title of embed to title with text ":stop_button: No track playing"
 				reply with last created embed
 				
-discord command _cm [<integer>] [<text>]:
+discord command _cm [<integer>] [<text>]: # 채널로 메세지 보내기
 	trigger:
 		if {krbad::%discord id of event-user%} is "624274923455512577" or "688222392186699779":
 			if arg 1 is set:
@@ -679,7 +683,7 @@ discord command _cm [<integer>] [<text>]:
 				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 				reply with last created embed
 
-discord command _dm [<integer>] [<text>]:
+discord command _dm [<integer>] [<text>]: # 유저한테 DM보내기
 	trigger:
 		if {krbad::%discord id of event-user%} is "624274923455512577":
 			if arg 1 is set:
@@ -708,7 +712,7 @@ discord command _dm [<integer>] [<text>]:
 				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 				reply with last created embed
 
-discord command 카린아 [<text>] [<text>] [<text>]:
+discord command 카린아 [<text>] [<text>] [<text>]: # Main(서버등록 해야 하게 수정예정)
 	trigger:
 		if arg 1 is "가입":
 			if {reegestered::%discord id of event-user%} is not set:
@@ -986,33 +990,15 @@ discord command 카린아 [<text>] [<text>] [<text>]:
 							wait 1 tick
 							delete {dc}
 							stop
-
-discord command +후원 [<text>]:
-	trigger:
-		if arg 1 is not set:
-			create embed:
-				set title of the embed to "후원 안내"
-				set the colour of the embed to RED
-				set the description of embed to "카린봇 후원은 +후원 [컬처랜드 핀코드] 형태로 작성해주세요.%nl%계좌는 받지 않고 있습니다."
-				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-				reply with last created embed
-		if arg 1 is set:
-			delete event-message with event-bot
-			create embed:
-				set title of the embed to "후원 안내"
-				set the colour of the embed to GREEN
-				set the description of embed to "후원처리가 정상적으로 완료되었습니다.%nl%%nl%컬처랜드 핀코드: %arg 1%"
-				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-				reply with last created embed
 				
-discord command _logout:
-	trigger:
-		if {krbad::%discord id of event-user%} is "624274923455512577":
-			delete {krbad::%discord id of event-user%}
-			reply with "{@b} GoodBye! See you later!"
-			stop
+#discord command _logout: # 이거도 주석처리해야함. 관리자 로그인 없으니까. 그래서 지금 해버림.. ㅋㅋ
+#	trigger:
+#		if {krbad::%discord id of event-user%} is "624274923455512577":
+#			delete {krbad::%discord id of event-user%}
+#			reply with "{@b} GoodBye! See you later!"
+#			stop
 			
-discord command 카린앙 [<text>] [<text>] [<text>] [<text>] [<text>]:
+discord command 카린앙 [<text>] [<text>] [<text>] [<text>] [<text>]: #임베드따라해가 너무 arg를 많이 잡아먹어서 카린앙 으로 구분
 	trigger:
 		if arg 1 is "임베드따라해":
 			if {reegestered::%discord id of event-user%} is true:
@@ -1047,15 +1033,15 @@ discord command 카린앙 [<text>] [<text>] [<text>] [<text>] [<text>]:
 			else:
 				reply with "+가입 또는 +regester 를 입력하여 카린봇에 가입해보세요!"
 
-On guild message received seen by "{@name}":
-	if event-string contain "^^ㅣ" or "샹" or "썅" or "ㅄ" or "ㅂㅅ" or "병신" or "씨발" or "애미" or "간나" or "좆" or "보지" or "자지" or "섹스" or "ㅆㅂ" or "ㅅㅂ" or "ㅄ" or "시발" or "새끼" or "느금마" or "ㄴㄱㅁ" or "야동" or "떽뜨" or "^^ㅣ발" or "ㅆㅂ" or "온더비치" or "온더 비치" or "nigger" or "bitch" or "sex" or "엄준식" or "ㄴㅇㅁ" or "ㅇㅁ" or "발레" or "자위" or "신음" or "지랄" or "ㅈㄹ" or "ㅇㅎㅎ" or "에헤헤" or "tq" or "tlqkf" or "ㅅㅂ" or "시발" or "씨발" or "Tlqkf" or "ㅅㅅ" or "섹스" or "꼰대" or "꼬라지" or "개떡같은" or "개같은" or "지랄" or "새끼" or "시발" or "퍽큐" or "인간말종" or "인간쓰레기" or "똥꼬" or "똥방구" or "또라이" or "자위행위" or "성행위" or "ㅗ":
+On guild message received seen by "{@name}": # 진짜 메인이 되는 부분
+	if event-string contain "(욕설)": # 알아서 추가하시길
 		if {검열::%discord id of event-guild%} is true:
 			delete event-message with event-bot
 			reply with "%mention tag of event-user%, 어허! 그런말 하면 안댕"
 			stop
 		else:
 			stop
-	else if event-string contain "미안하다 이거 보여주려고 어그로끌었다":
+	else if event-string contain "미안하다 이거 보여주려고 어그로끌었다": # 귀찮아서 분류함
 		if {검열::%discord id of event-guild%} is true:
 			delete event-message with event-bot
 			reply with "%mention tag of event-user%, 어허! 그런말 하면 안댕"
@@ -1066,7 +1052,7 @@ On guild message received seen by "{@name}":
 		if {_taza::started} is set:
 			set {_taza::now2} to "%difference between {_taza::now} and now%"
 			reply with "%mention tag of event-user%, %{_taza::now2}% 초 걸렸습니다!"
-			delete {_taza::*}
+			delete {_taza::*}       # 타자
 			stop
 		else:
 			stop
@@ -1074,7 +1060,7 @@ On guild message received seen by "{@name}":
 		if {_taza::started} is set:
 			set {_taza::now2} to "%difference between {_taza::now} and now%"
 			reply with "%mention tag of event-user%, %{_taza::now2}% 초 걸렸습니다!"
-			delete {_taza::*}
+			delete {_taza::*}      # 타자
 			stop
 		else:
 			stop
@@ -1082,7 +1068,7 @@ On guild message received seen by "{@name}":
 		if {_taza::started} is set:
 			set {_taza::now2} to "%difference between {_taza::now} and now%"
 			reply with "%mention tag of event-user%, %{_taza::now2}% 초 걸렸습니다!"
-			delete {_taza::*}
+			delete {_taza::*}     # 타자
 			stop
 		else:
 			stop
@@ -1090,17 +1076,17 @@ On guild message received seen by "{@name}":
 		if {_taza::started} is set:
 			set {_taza::now2} to "%difference between {_taza::now} and now%"
 			reply with "%mention tag of event-user%, %{_taza::now2}% 초 걸렸습니다!"
-			delete {_taza::*}
+			delete {_taza::*}     # 타자
 			stop
 		else:
 			stop
-	else if event-string contain "나에게 데이터를 달라" or "헌터야":
+	else if event-string contain "나에게 데이터를 달라" or "헌터야": # 0.0.1 release판에 없는건데 있던거. 빼서 쓰세요 0.0.2때 삭제
 		delete event-message with event-bot
 		stop
-	else if event-string contain "카린아 " or "krb " or "KRB " or "ㅋㄹㅇ " or "ㅋ " or "카린아?":
-		set {_} to event-string
-		set {_amount::*} to {_} split by " "
-		if {_amount::2} is "서버등록":
+	else if event-string contain "카린아 " or "krb " or "KRB " or "ㅋㄹㅇ " or "ㅋ " or "카린아?": # Main of Main
+		set {_} to event-string              # 받은 메세지를
+		set {_amount::*} to {_} split by " " # 띄어쓰기로 나누고 저장
+		if {_amount::2} is "서버등록": # 서버등록 명령어. 카린봇 명령어 사용에 있어서 가장 중요한 부분.
 			if {server::%discord id of event-guild%} is not set:
 				if {antiserver::%discord id of event-guild%} is not true:
 					set {servrege::%discord id of event-guild%} to true
@@ -1124,7 +1110,7 @@ On guild message received seen by "{@name}":
 					stop
 			else:
 				reply with "이미 등록되었습니다!"
-		if {server::%discord id of event-guild%} is set:
+		if {server::%discord id of event-guild%} is set: # 여기부터 카린봇 명령어.
 			if event-string is "카린아?":
 				set {karina} to random integer between 1 and 3
 				if {karina} is 1:
@@ -1151,14 +1137,14 @@ On guild message received seen by "{@name}":
 				else if {_amount::2} is "자폭해":
 					reply with ":rage:.....:rage:........:rage:....:firecracker::firecracker::firecracker::firecracker::firecracker::bomb::bomb::bomb::bomb::candle::boom::boom::boom::boom::boom::boom::boom:"
 					stop
-				else if {_amount::2} is "hellothisisverification":
-					reply with "! Rin_E_ 8701 ( 624274923455512577 )"
+				else if {_amount::2} is "hellothisisverification": # koreanbots.cf 등록을 위한 명령어
+					reply with "! Rin_E_ 8701 ( 624274923455512577 )" # 이 줄만 수정해서 쓰세요
 					reply with "샵을 표시 못해서 (주석 처리됨) 일단 이대로 표시해둡니다."
 					stop
 				else:
-					loop {learn::*}:
+					loop {learn::*}: # 위의 명령어가 아니라면 습득된 명령어 실행
 						set {_amount2::*} to loop-value split by "`"
-						if {_amount2::2} contain "(줄바꿈)":
+						if {_amount2::2} contain "(줄바꿈)": # 줄바꿔서 등록이 안되서 여기서 바뀌게 해둠
 							replace all "(줄바꿈)" in {_amount2::2} with "%nl%"
 						if {_amount::2} is {_amount2::1}:
 							if {dc} is not true:
@@ -1169,9 +1155,9 @@ On guild message received seen by "{@name}":
 								stop
 			if {_amount::2} contain "도와줘" or "도움말" or "ㄷㅇㅈ" or "ㄷㅇㅁ":
 				if {_amount::3} is not "기본" or "ㄱㅂ" or "습득" or "ㅅㄷ":
-					create an invite to event-channel
+					create an invite to event-channel # log
 					send "%last created invite%%nl%[ 카린아 도와줘 ] 사용하였습니다!" to channel with id "{@log}" with "{@name}"
-					reply with mention tag of event-user
+					reply with mention tag of event-user # 유저 
 					create embed:
 						set title of the embed to "카린봇 도움말 목록"
 						set the colour of the embed to YELLOW
@@ -1215,7 +1201,7 @@ On guild message received seen by "{@name}":
 						add split field named "카린아 [명령어]" with value "카린아 습득 명령어로 습득한 말을 나타냅니다!" to embed
 						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 						reply with last created embed
-			#if {_amount::2} contain "타이머":
+			#if {_amount::2} contain "타이머": # 아까 말했지만 이거도 망함.
 			#	if {reegestered::%discord id of event-user%} is true:
 			#		if {_amount::3} contain "시작" or "ㅅㅈ":
 			#			if {_amount::4} is set:
@@ -1302,7 +1288,7 @@ On guild message received seen by "{@name}":
 			#	else:
 			#		reply with "카린아 가입 으로 카린봇 서비스에 가입해보세요!"
 			#		stop
-			if {_amount::2} contain "검열모드":
+			if {_amount::2} contain "검열모드": # 아까 욕설 필터 켜거나 끄는거
 				if {_amount::3} contain "설정":
 					if {검열::%discord id of event-guild%} is not true:
 						set {검열::%discord id of event-guild%} to true
@@ -1312,18 +1298,18 @@ On guild message received seen by "{@name}":
 						set {검열::%discord id of event-guild%} to false
 						reply with "검열모드가 비 활성화 되었습니다."
 						stop
-			if {_amount::2} contain "초대코드":
+			if {_amount::2} contain "초대코드": # KaRin Bot v2 초대링크
 				reply with "https://discordapp.com/oauth2/authorize?client_id=685715386745880581&permissions=8&scope=bot"
 				reply with "저를 초대하셔서 서버를 인증하시면 다양한 명령어를 이용하실 수 있습니다!"
 				stop
-			if {_amount::2} contain "버전" or "버젼" or "version":
+			if {_amount::2} contain "버전" or "버젼" or "version": # 카린이여 버전을 설정하거라 [버전] 을 통해 설정한 버전을 확인.
 				create embed:
 					set title of the embed to "KaRin Bot Version is..."
 					set the colour of the embed to GREEN
 					set the description of embed to "%{version}%"
 					set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 					reply with last created embed
-			if {_amount::2} contain "타자" or "ㅌㅈ":
+			if {_amount::2} contain "타자" or "ㅌㅈ": # 타자 시스템. 몇초 걸렸는지 계산하려고 했는데 실패.
 				if {_amount::3} contain "시작" or "ㅅㅈ":
 					if {_taza::started} is not set:
 						set {_taza::started} to true
@@ -1356,7 +1342,7 @@ On guild message received seen by "{@name}":
 						reply with "타자가 진행되고 있지 않습니다!"
 						stop
 			if {_amount::2} contain "시간":
-				reply with "현재 시간은 %now% 입니다."
+				reply with "현재 시간은 %now% 입니다." # skript의 설정을 어캐 했는지에 따라 다르게 표시됨.
 				stop
 			if {_amount::2} contain "습득" or "ㅅㄷ":
 				if {reegestered::%discord id of event-user%} is true:
@@ -1367,11 +1353,11 @@ On guild message received seen by "{@name}":
 						if {_amount::3} is "시간" or "서버등록" or "ㄷㅇㅈ" or "도와줘" or "도움말" or "문의" or "따라해" or "습득" or "ㅅㄷ" or "타자" or "ㅌㅈ" or "나루토" or "ㄴㄾ" or "ㄴㄹㅌ" or "ㄷㅇㅁ" or "뮤직" or "초대코드" or "초대링크" or "잊어" or "습득제거" or "ㅅㄷㅈㄱ" or "습득모두제거" or "ㅅㄷㅁㄷㅈㄱ" or "습득확인" or "ㅅㄷㅎㅇ" or "카린유튜브" or "명언" or "임베드따라해" or "업로드" or "후원" or "유저정보" or "가입" or "도와주거라" or "탈퇴시켜라" or "가입시켜라" or "지정상태를" or "리로드하거라" or "종료하거라" or "시작하거라" or "보아라" or "들어라" or "하거라" or "경고를" or "공지하거라":
 							reply with "%mention tag of event-user%님, 그 명령어는 카린봇 기존 명령어라서 등록이 불가능해요!"
 							stop
-						if {krbad::%discord id of event-user%} is not "est":
-							if {_amount::3} contain "병신" or "씨발" or "애미" or "간나" or "좆" or "보지" or "자지" or "섹스" or "ㅆㅂ" or "ㅅㅂ" or "ㅄ" or "시발" or "새끼" or "느금마" or "ㄴㄱㅁ" or "야동" or "떽뜨" or "^^ㅣ발" or "ㅆㅂ" or "온더비치" or "온더 비치" or "nigger" or "bitch" or "sex" or "엄준식" or "ㄴㅇㅁ" or "ㅇㅁ" or "발레" or "자위" or "신음" or "지랄" or "ㅈㄹ" or "ㅇㅎㅎ" or "에헤헤" or "tq" or "tlqkf" or "ㅅㅂ" or "시발" or "씨발" or "Tlqkf" or "ㅅㅅ" or "섹스" or "꼰대" or "꼬라지" or "개떡같은" or "개같은" or "지랄" or "새끼" or "시발" or "퍽큐" or "인간말종" or "인간쓰레기" or "똥꼬" or "똥방구" or "또라이" or "자위행위" or "성행위" or "ㅗ":
+						if {krbad::%discord id of event-user%} is not "est": # 욕설필터 제외할 사람의 ID를 est 에다가 적으시면 됩니다.
+							if {_amount::3} contain "(필터할거)": # 아까도 말했지만 알아서
 								reply with "%mention tag of event-user%님, 그 명령어는 습득 시스템에서 사용 불가능한 명령어입니다!"
 								stop
-							if {_amount::4} contain "병신" or "씨발" or "애미" or "간나" or "좆" or "보지" or "자지" or "섹스" or "ㅆㅂ" or "ㅅㅂ" or "ㅄ" or "시발" or "새끼" or "느금마" or "ㄴㄱㅁ" or "야동" or "떽뜨" or "^^ㅣ발" or "ㅆㅂ" or "온더비치" or "온더 비치" or "nigger" or "bitch" or "sex" or "엄준식" or "ㄴㅇㅁ" or "ㅇㅁ" or "발레" or "자위" or "신음" or "지랄" or "ㅈㄹ" or "ㅇㅎㅎ" or "에헤헤" or "tq" or "tlqkf" or "ㅅㅂ" or "시발" or "씨발" or "Tlqkf" or "ㅅㅅ" or "섹스" or "꼰대" or "꼬라지" or "개떡같은" or "개같은" or "지랄" or "새끼" or "시발" or "퍽큐" or "인간말종" or "인간쓰레기" or "똥꼬" or "똥방구" or "또라이" or "자위행위" or "성행위" or "ㅗ":
+							if {_amount::4} contain "(필터할거)":
 								reply with "%mention tag of event-user%님, 그 명령어는 습득 시스템에서 사용 불가능한 명령어입니다!"
 								stop
 							if {krbad::%discord id of event-user%} is "608956812636454915":
@@ -1382,8 +1368,8 @@ On guild message received seen by "{@name}":
 									if {_amount::4} contain "-":
 										replace all "-" in {_amount::4} with " "
 									add 1 to {count}
-									set {learner::%{_amount::3}%} to "%event-user%(%discord id of event-user%)"
-									set {learner2::%{_amount::3}%} to "%discord id of event-user%"
+									set {learner::%{_amount::3}%} to "%event-user%(%discord id of event-user%)" # 습득자 표시때 필요
+									set {learner2::%{_amount::3}%} to "%discord id of event-user%" # 카린아 잊어 사용시 필요
 									set {learn::%{_amount::3}%} to "%{_amount::3}%`%{_amount::4}%`%{learner::%{_amount::3}%}%"
 									reply with "%mention tag of event-user%님! ``%{_amount::3}%``가 ``%{_amount::4}%``군요! 이제 알겠어요!"
 									create an invite to event-channel
@@ -1423,7 +1409,7 @@ On guild message received seen by "{@name}":
 					if {learner2::%{_amount::3}%} is not "%discord id of event-user%":
 						add reaction "x" to event-message with "{@name}"
 						reply with "당신이 습득 시킨것이 아니에요!"
-			if {_amount::2} contain "습득확인" or "ㅅㄷㅎㅇ":
+			if {_amount::2} contain "습득확인" or "ㅅㄷㅎㅇ": # 개발자 명령어
 				if {krbad::%discord id of event-user%} is "624274923455512577":
 					if {learn::*} is set:
 						loop {learn::*}:
@@ -1433,12 +1419,12 @@ On guild message received seen by "{@name}":
 						reply with "습득된 것이 없습니다!"
 				else:
 					reply with "{@b} 당신은 권한이 없습니다!"
-			if {_amount::2} contain "카린유튜브":
+			if {_amount::2} contain "카린유튜브": # 카린봇만의 명령어입니다. 지우고 사용하셔도 좋습니다.
 				reply with "https://www.youtube.com/channel/UCcX1JJpDsaROuUVHS9_vUaA"
 				reply with "와! 카린유튜브!"
 				stop
 			if {_amount::2} contain "습득제거" or "ㅅㄷㅈㄱ":
-				if {krbad::%discord id of event-user%} is "624274923455512577":
+				if {krbad::%discord id of event-user%} is "624274923455512577": # 개발자 명령어
 					if {learn::%{_amount::3}%} is set:
 						add reaction "white_check_mark" to event-message with "{@name}"
 						loop {learn::*}:
@@ -1458,7 +1444,7 @@ On guild message received seen by "{@name}":
 						reply with "{@b} 데이터 결과값 불러오기에 실패했습니다!"
 				else:
 					reply with "{@b} 당신은 권한이 없습니다!"
-			if {_amount::2} contain "습득모두제거" or "ㅅㄷㅁㄷㅈㄱ":
+			if {_amount::2} contain "습득모두제거" or "ㅅㄷㅁㄷㅈㄱ": # 개발자 명령어
 				if {krbad::%discord id of event-user%} is "624274923455512577":
 					if {learn::*} is set:
 						add reaction "white_check_mark" to event-message with "{@name}"
@@ -1475,7 +1461,7 @@ On guild message received seen by "{@name}":
 						reply with "{@b} 데이터 결과값 불러오기에 실패했습니다!"
 				else:
 					reply with "{@b} 당신은 권한이 없습니다!"
-			if {_amount::2} contain "명언":
+			if {_amount::2} contain "명언": # 랜덤 명언 추출기였지만 사용량 저조로 인해 사용 안해봐서 작동 되는지 모르겠음
 				if {_amount::3} is not set:
 					create embed:
 						set title of the embed to "Error:"
@@ -1511,8 +1497,8 @@ On guild message received seen by "{@name}":
 					set the footer of embed to footer with text "KaRin Bot Good Sound Engine by Rin_E_"
 					reply with last created embed
 				delete {명언}
-		else:
-			add 1 to {noserver::%discord id of event-guild%}
+		else: # 서버등록을 하지 않으면
+			add 1 to {noserver::%discord id of event-guild%} # 명령어 1회 사용시 noserver이라는 배열변수에 값을 저장
 			if {noserver::%discord id of event-guild%} is 5 or 10 or 15 or 20 or 25 or 30 or 35 or 40 or 45 or 50 or 55 or 60 or 65 or 70 or 75 or 80 or 85 or 90 or 95 or 100:
 				reply with "서버 등록을 하지 않고 명령어를 %{noserver::%discord id of event-guild%}%회 사용하셨습니다."
 				if {noserver::%discord id of event-guild%} is between 1 and 19:
@@ -1521,6 +1507,9 @@ On guild message received seen by "{@name}":
 				if {noserver::%discord id of event-guild%} is not between 1 and 19:
 					reply with "서버 등록을 하지 않고 명령어를 20회 이상 사용하셨기 때문에 서버 등록이 불가능하게 되었습니다."
 					reply with "이 메세지가 보이면 봇 관리자를 불러 서버 등록 불가 상황을 해제시켜 주세요."
+					# 카린이여 서버등록경고를 설정하거라 [ID] [횟수]
+					# or
+					# 카린이여 서버등록을 등록시켜라 [ID]
 					delete {server::%discord id of event-guild%}
 					set {antiserver::%discord id of event-guild%} to true
 					stop
