@@ -1,10 +1,10 @@
-# visual code studio = Plain text -> python (보기 편함)
+# visual studio code = Plain text -> python (보기 편함)
 # Notepad++ = Normal text file -> P -> Python (보기 편함(?))
 
 # 본 문서는 CC BY-NC-SA 2.0 KR에 따라 이용이 가능합니다.
 # https://creativecommons.org/licenses/by-nc-sa/2.0/kr/
 
-# version = [ 0.0.1 release ]
+# version = [ 0.1.0 release ]
 
 options: #세팅들
 	# a부터 z까지 단일 알파벳 = 접두사
@@ -712,7 +712,7 @@ discord command _dm [<integer>] [<text>]: # 유저한테 DM보내기
 				set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 				reply with last created embed
 
-discord command 카린아 [<text>] [<text>] [<text>]: # Main(서버등록 해야 하게 수정예정)
+discord command 카린아 [<text>] [<text>] [<text>]: # Main
 	trigger:
 		if arg 1 is "가입":
 			if {reegestered::%discord id of event-user%} is not set:
@@ -728,168 +728,155 @@ discord command 카린아 [<text>] [<text>] [<text>]: # Main(서버등록 해야
 					delete event-message with event-bot
 			else:
 				reply with "이미 가입되었습니다!"
-		if arg 1 is "따라해":
-			if {reegestered::%discord id of event-user%} is true:
-				if arg 2 is set:
-					add 1 to {count::%discord id of event-user%}
-					create an invite to event-channel
-					send "%last created invite%%nl%``%{_amount::3}%``를 해당 서버에서 따라했습니다.%nl%저장된 칸: %discord id of event-user%-%{count::%discord id of event-user%}%" to channel with id "{@log}" with "{@name}"
-					if {reeplysys::%discord id of event-user%::%{count::%discord id of event-user%}%} is set:
-						reply with "이미 등록된 칸입니다. 따라하기가 취소됩니다."
-						stop
-					else:
-						delete event-message with event-bot
-						if arg 3 is set:
-							reply with "%arg-2% %arg-3%" and store it in {reeplysys::%discord id of event-user%::%{count::%discord id of event-user%}%}
+		if {server::%discord id of event-guild%} is set:
+			if arg 1 is "따라해":
+				if {reegestered::%discord id of event-user%} is true:
+					if arg 2 is set:
+						add 1 to {count::%discord id of event-user%}
+						create an invite to event-channel
+						send "%last created invite%%nl%``%{_amount::3}%``를 해당 서버에서 따라했습니다.%nl%저장된 칸: %discord id of event-user%-%{count::%discord id of event-user%}%" to channel with id "{@log}" with "{@name}"
+						if {reeplysys::%discord id of event-user%::%{count::%discord id of event-user%}%} is set:
+							reply with "이미 등록된 칸입니다. 따라하기가 취소됩니다."
+							stop
 						else:
-							reply with "%arg-2%" and store it in {reeplysys::%discord id of event-user%::%{count::%discord id of event-user%}%}
+							delete event-message with event-bot
+							if arg 3 is set:
+								reply with "%arg-2% %arg-3%" and store it in {reeplysys::%discord id of event-user%::%{count::%discord id of event-user%}%}
+							else:
+								reply with "%arg-2%" and store it in {reeplysys::%discord id of event-user%::%{count::%discord id of event-user%}%}
+					else:
+						create embed:
+							set title of the embed to "Error:"
+							set the colour of the embed to RED
+							set the description of embed to "따라할 말을 입력해주세요.%nl%카린아 따라해 [할말]"
+							set the footer of embed to footer with text "KaRin Bot Reply Engine by Rin_E_"
+							reply with last created embed
+				else:
+					reply with "카린아 가입 또는 카린아 regester로 가입해보세요!"
+					stop
+			if arg 1 is "유저정보":
+				if arg 2 is set:
+					create embed:
+						set title of the embed to "%arg 2%"
+						set color of embed to YELLOW
+						set thumbnail of the embed to "https://minotar.net/armor/body/%arg-2%/100.png"
+						set the description of embed to "https://ko.namemc.com/profile/%arg-2% %nl%- Ukrbad: %{Ukrbad::%arg 2%}%"
+						reply with last created embed
+						stop
+				else:
+					reply with "사용법 : 카린아 유저정보 [마크닉]"
+					stop
+			if arg 1 is "초대링크":
+				create an invite to event-channel
+				reply with "%last created invite%"
+				reply with "**24시간동안만 지속됩니다. 24시간이 지나면 다시 명령어를 입력해서 초대링크를 새로 만들어주세요.**"
+			if arg 1 is "문의":
+				if arg 1 is set:
+					add 1 to {mcount}
+					delete event-message with event-bot
+					create embed:
+						set title of the embed to "완료!"
+						set the colour of the embed to AQUA
+						set the description of embed to "문의 내용이 전달되었습니다."
+						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+						reply with last created embed
+					if {kr} is not 1:
+						set {kr} to 1
+						set {dcount::%{mcount}%} to "%{mcount}%"
+						create embed:
+							set title of the embed to "%{mcount}%번째 문의 :: %event-user% [ %discord id of event-user% ]"
+							set the colour of the embed to AQUA
+							set the description of embed to "%arg-2%"
+							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+							send last created embed to channel with id "{@log}" with "{@name}"
+							wait 2 ticks
+							delete {kr}
+						if {kr1} is not 1:
+							set {kr1} to 1
+							create embed:
+								set title of the embed to "완료!"
+								set the colour of the embed to AQUA
+								set the description of embed to "문의 내용이 전달되었습니다."
+								set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+								reply with last created embed
+								wait 2 ticks
+								delete {kr}
 				else:
 					create embed:
 						set title of the embed to "Error:"
 						set the colour of the embed to RED
-						set the description of embed to "따라할 말을 입력해주세요.%nl%카린아 따라해 [할말]"
-						set the footer of embed to footer with text "KaRin Bot Reply Engine by Rin_E_"
-						reply with last created embed
-			else:
-				reply with "카린아 가입 또는 카린아 regester로 가입해보세요!"
-				stop
-		if arg 1 is "유저정보":
-			if arg 2 is set:
-				create embed:
-					set title of the embed to "%arg 2%"
-					set color of embed to YELLOW
-					set thumbnail of the embed to "https://minotar.net/armor/body/%arg-2%/100.png"
-					set the description of embed to "https://ko.namemc.com/profile/%arg-2% %nl%- Ukrbad: %{Ukrbad::%arg 2%}%"
-					reply with last created embed
-					stop
-			else:
-				reply with "사용법 : 카린아 유저정보 [마크닉]"
-				stop
-		if arg 1 is "초대링크":
-			create an invite to event-channel
-			reply with "%last created invite%"
-			reply with "**24시간동안만 지속됩니다. 24시간이 지나면 다시 명령어를 입력해서 초대링크를 새로 만들어주세요.**"
-		if arg 1 is "문의":
-			if arg 1 is set:
-				add 1 to {mcount}
-				delete event-message with event-bot
-				create embed:
-					set title of the embed to "완료!"
-					set the colour of the embed to AQUA
-					set the description of embed to "문의 내용이 전달되었습니다."
-					set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-					reply with last created embed
-				if {kr} is not 1:
-					set {kr} to 1
-					set {dcount::%{mcount}%} to "%{mcount}%"
-					create embed:
-						set title of the embed to "%{mcount}%번째 문의 :: %event-user% [ %discord id of event-user% ]"
-						set the colour of the embed to AQUA
-						set the description of embed to "%arg-2%"
+						set the description of embed to "문의 내용을 입력해주세요."
 						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-						send last created embed to channel with id "{@log}" with "{@name}"
-						wait 2 ticks
-						delete {kr}
-					if {kr1} is not 1:
-						set {kr1} to 1
+						reply with last created embed
+						stop
+			if arg 1 is "후원":
+				if arg 2 is not set:
+					create embed:
+						set title of the embed to "후원 안내"
+						set the colour of the embed to RED
+						set the description of embed to "카린봇 후원은 ``카린아 후원 [컬처랜드 핀코드]`` 형태로 작성해주세요.%nl%계좌는 받지 않고 있습니다."
+						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+						send last created embed to user with id "%discord id of event-user%" with "{@name}"
+				if arg 2 is set:
+					delete event-message with event-bot
+					if {kr} is not 1:
+						set {kr} to 1
 						create embed:
-							set title of the embed to "완료!"
+							set title of the embed to "%event-user% [ %discord id of event-user% ] 님의 후원입니다."
 							set the colour of the embed to AQUA
-							set the description of embed to "문의 내용이 전달되었습니다."
+							set the description of embed to "%arg 1%"
+							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+							send last created embed to channel with id "{@log}" with "{@name}"
+							wait 2 ticks
+							delete {kr}
+						if {kr1} is not 1:
+							set {kr1} to 1
+							create embed:
+								set title of the embed to "후원 안내"
+								set the colour of the embed to AQUA
+								set the description of embed to "후원처리가 정상적으로 완료되었습니다.%nl%24시간 내에 확인 처리 됩니다.%nl%%nl%컬처랜드 핀코드: %arg 1%"
+								set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+								send last created embed to user with id "%discord id of event-user%" with "{@name}"
+								wait 2 ticks
+								delete {kr}
+			if arg 1 is "업로드":
+				if arg 2 contain "http":
+					delete event-message with event-bot
+					upload "%arg 2%" to event-channel
+				else:
+					create embed:
+						set title of the embed to "Error:"
+						set the colour of the embed to RED
+						set the description of embed to "링크를 첨부해주세요."
+						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+						reply with last created embed
+			if arg 1 is "뮤직":
+				if arg 2 is "도움말":
+					reply with mention tag of event-user
+					create embed:
+						set title of the embed to "카린봇 뮤직 명령어"
+						set the colour of the embed to YELLOW
+						set thumbnail of the embed to "https://cdn.discordapp.com/attachments/702363259990442048/703106691348168765/2020-04-24_7.png"
+						set the description of embed to "카린아 뮤직 재생 [유튜브 영상 제목] - [유튜브 영상 제목]에 적은 제목을 유튜브에서 검색합니다.%nl%+m.s - 지금 재생중인 음악을 스킵합니다.%nl%카린아 뮤직 볼륨 - 봇의 볼륨을 설정합니다."
+						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+						reply with last created embed
+				if arg 2 is "들어와" or "컴온":
+					if voice channel of event-member is set:
+						set {joinvc} to true
+						join voice channel of event-member
+						add reaction "white_check_mark" to event-message with "{@name}"
+					else:
+						add reaction "x" to event-message with "{@name}"
+						create embed:
+							set title of the embed to "Error:"
+							set the colour of the embed to RED
+							set the description of embed to "음성 채널에 입장해주세요."
 							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 							reply with last created embed
-							wait 2 ticks
-							delete {kr}
-			else:
-				create embed:
-					set title of the embed to "Error:"
-					set the colour of the embed to RED
-					set the description of embed to "문의 내용을 입력해주세요."
-					set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-					reply with last created embed
-					stop
-		if arg 1 is "후원":
-			if arg 2 is not set:
-				create embed:
-					set title of the embed to "후원 안내"
-					set the colour of the embed to RED
-					set the description of embed to "카린봇 후원은 +후원 [컬처랜드 핀코드] 형태로 작성해주세요.%nl%계좌는 받지 않고 있습니다."
-					set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-					send last created embed to user with id "%discord id of event-user%" with "{@name}"
-			if arg 2 is set:
-				delete event-message with event-bot
-				if {kr} is not 1:
-					set {kr} to 1
-					create embed:
-						set title of the embed to "%event-user% [ %discord id of event-user% ] 님의 후원입니다."
-						set the colour of the embed to AQUA
-						set the description of embed to "%arg 1%"
-						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-						send last created embed to channel with id "{@log}" with "{@name}"
-						wait 2 ticks
-						delete {kr}
-					if {kr1} is not 1:
-						set {kr1} to 1
-						create embed:
-							set title of the embed to "후원 안내"
-							set the colour of the embed to AQUA
-							set the description of embed to "후원처리가 정상적으로 완료되었습니다.%nl%24시간 내에 확인 처리 됩니다.%nl%%nl%컬처랜드 핀코드: %arg 1%"
-							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-							send last created embed to user with id "%discord id of event-user%" with "{@name}"
-							wait 2 ticks
-							delete {kr}
-		if arg 1 is "업로드":
-			if arg 2 contain "http":
-				delete event-message with event-bot
-				upload "%arg 2%" to event-channel
-			else:
-				create embed:
-					set title of the embed to "Error:"
-					set the colour of the embed to RED
-					set the description of embed to "링크를 첨부해주세요."
-					set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-					reply with last created embed
-		if arg 1 is "뮤직":
-			if arg 2 is "도움말":
-				reply with mention tag of event-user
-				create embed:
-					set title of the embed to "카린봇 뮤직 명령어"
-					set the colour of the embed to YELLOW
-					set thumbnail of the embed to "https://cdn.discordapp.com/attachments/702363259990442048/703106691348168765/2020-04-24_7.png"
-					set the description of embed to "카린아 뮤직 재생 [유튜브 영상 제목] - [유튜브 영상 제목]에 적은 제목을 유튜브에서 검색합니다.%nl%+m.s - 지금 재생중인 음악을 스킵합니다.%nl%카린아 뮤직 볼륨 - 봇의 볼륨을 설정합니다."
-					set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-					reply with last created embed
-			if arg 2 is "들어와" or "컴온":
-				if voice channel of event-member is set:
-					set {joinvc} to true
-					join voice channel of event-member
-					add reaction "white_check_mark" to event-message with "{@name}"
-				else:
-					add reaction "x" to event-message with "{@name}"
-					create embed:
-						set title of the embed to "Error:"
-						set the colour of the embed to RED
-						set the description of embed to "음성 채널에 입장해주세요."
-						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-						reply with last created embed
-			if arg 2 is "스킵" or "넘겨":
-				if {krbad::%discord id of event-user%} is "624274923455512577":
-					set {joinvc} to false
-					stop the track event-bot is playing
-					add reaction "white_check_mark" to event-message with "{@name}"
-				else:
-					create embed:
-						set title of the embed to "Error:"
-						set the colour of the embed to RED
-						set the description of embed to "You are not have permission!"
-						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-						reply with last created embed
-			if arg 2 is "나가" or "꺼져":
-				if {joinvc} is true:
+				if arg 2 is "스킵" or "넘겨":
 					if {krbad::%discord id of event-user%} is "624274923455512577":
 						set {joinvc} to false
 						stop the track event-bot is playing
-						make event-bot leave vc
 						add reaction "white_check_mark" to event-message with "{@name}"
 					else:
 						create embed:
@@ -898,89 +885,80 @@ discord command 카린아 [<text>] [<text>] [<text>]: # Main(서버등록 해야
 							set the description of embed to "You are not have permission!"
 							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
 							reply with last created embed
-				else:
-					add reaction "x" to event-message with "{@name}"
-					create embed:
-						set title of the embed to "Error:"
-						set the colour of the embed to RED
-						set the description of embed to "카린봇이 음성채널에 참여중이지 않습니다!"
-						set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-						reply with last created embed
-			if arg 2 is "재생" or "플레이":
-				delete event-message with event-bot
-				if voice channel of event-member is not set:
-					reply with "고객님은 통화방에 들어가 있으셔야 해요!"
-					stop
-				if arg 3 is set:
-					search youtube for arg-3 and store the results in {ree::*}
-					if {ree::1} is not set:
-						reply with "%arg-3%를 검색하였으나, 아무 결과가 나오지 않았습니다 :("
-						stop
-					if {trr::*} is not set:
-						join voice channel of event-member
-						set {joinvc} to true
-						wait 1.5 seconds
-						play {ree::1}
-						reply with "%{ree::1}%를 재생합니다."
-						set {nowmusic::1} to {ree::1}
-						set {nowmusic::2} to arg-3
-						add "%{ree::1}%DCISGREAT%arg-3%" to {trr::*}
+				if arg 2 is "나가" or "꺼져":
+					if {joinvc} is true:
+						if {krbad::%discord id of event-user%} is "624274923455512577":
+							set {joinvc} to false
+							stop the track event-bot is playing
+							make event-bot leave vc
+							add reaction "white_check_mark" to event-message with "{@name}"
+						else:
+							create embed:
+								set title of the embed to "Error:"
+								set the colour of the embed to RED
+								set the description of embed to "You are not have permission!"
+								set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+								reply with last created embed
+					else:
+						add reaction "x" to event-message with "{@name}"
 						create embed:
+							set title of the embed to "Error:"
+							set the colour of the embed to RED
+							set the description of embed to "카린봇이 음성채널에 참여중이지 않습니다!"
+							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+							reply with last created embed
+				if arg 2 is "재생" or "플레이":
+					delete event-message with event-bot
+					if voice channel of event-member is not set:
+						reply with "고객님은 통화방에 들어가 있으셔야 해요!"
+						stop
+					if arg 3 is set:
+						search youtube for arg-3 and store the results in {ree::*}
+						if {ree::1} is not set:
+							reply with "%arg-3%를 검색하였으나, 아무 결과가 나오지 않았습니다 :("
+							stop
+						if {trr::*} is not set:
+							join voice channel of event-member
+							set {joinvc} to true
+							wait 1.5 seconds
+							play {ree::1}
+							reply with "%{ree::1}%를 재생합니다."
+							set {nowmusic::1} to {ree::1}
+							set {nowmusic::2} to arg-3
+							add "%{ree::1}%DCISGREAT%arg-3%" to {trr::*}
+							create embed:
+								set the title of embed to title with text "현재 음악 목록"
+								set the colour of the embed to GOLD
+								loop {trr::*}:
+									add 1 to {count.music}
+									set {ttrr::*} to {trr::%{count}%} split at "DCISGREAT"
+									add split field named "%{count.music}%" with value "**[ %{ttrr::2}% ]**%nl%``%{ttrr::1}%``" to embed
+									add split field named " " with value " " to embed
+									add split field named " " with value " " to embed
+								send "콘솔" to console
+								delete {ttrr::*}
+								delete {count}
+								reply with last created embed
+						else:
+							add "%{ree::1}%DCISGREAT%arg-3%" to {trr::*}
+							create embed:
 							set the title of embed to title with text "현재 음악 목록"
 							set the colour of the embed to GOLD
 							loop {trr::*}:
 								add 1 to {count.music}
-								set {ttrr::*} to {trr::%{count}%} split at "DCISGREAT"
+								set {ttrr::*} to {trr::%{count.music}%} split at "DCISGREAT"
 								add split field named "%{count.music}%" with value "**[ %{ttrr::2}% ]**%nl%``%{ttrr::1}%``" to embed
 								add split field named " " with value " " to embed
 								add split field named " " with value " " to embed
-							send "콘솔" to console
-							delete {ttrr::*}
+								send "d%{count}%" to console
+								send {ttrr::2} to console
+							reply with last created embed
 							delete {count}
-							reply with last created embed
-					else:
-						add "%{ree::1}%DCISGREAT%arg-3%" to {trr::*}
-						create embed:
-						set the title of embed to title with text "현재 음악 목록"
-						set the colour of the embed to GOLD
-						loop {trr::*}:
-							add 1 to {count.music}
-							set {ttrr::*} to {trr::%{count.music}%} split at "DCISGREAT"
-							add split field named "%{count.music}%" with value "**[ %{ttrr::2}% ]**%nl%``%{ttrr::1}%``" to embed
-							add split field named " " with value " " to embed
-							add split field named " " with value " " to embed
-							send "d%{count}%" to console
-							send {ttrr::2} to console
-						reply with last created embed
-						delete {count}
-						delete {ttrr::*}
-			if arg 2 is "볼륨":
-				if {dc} is not set:
-					set {dc} to "true"
-					if arg-3 parsed as int is not integer:
-						create embed:
-							set title of the embed to "뮤직 ㅡ 볼륨"
-							set the colour of the embed to YELLOW
-							set the description of embed to "%volume of event-bot%"
-							set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-							reply with last created embed
-						wait 1 tick
-						delete {dc}
-						stop
-					if arg-3 is set:
-						if {krbpremium::%discord id of event-user%} is true:
-							set {nowvol} to "%volume of event-bot%"
-							set the volume of event-bot to arg-3 parsed as int
-							create embed:
-								set title of the embed to "뮤직 ㅡ 볼륨 ( 설정됨 )"
-								set the colour of the embed to YELLOW
-								set the description of embed to "%{nowvol}% -> %volume of event-bot%"
-								set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
-								reply with last created embed
-							wait 1 tick
-							delete {dc}
-							stop
-						else:
+							delete {ttrr::*}
+				if arg 2 is "볼륨":
+					if {dc} is not set:
+						set {dc} to "true"
+						if arg-3 parsed as int is not integer:
 							create embed:
 								set title of the embed to "뮤직 ㅡ 볼륨"
 								set the colour of the embed to YELLOW
@@ -990,8 +968,33 @@ discord command 카린아 [<text>] [<text>] [<text>]: # Main(서버등록 해야
 							wait 1 tick
 							delete {dc}
 							stop
+						if arg-3 is set:
+							if {krbpremium::%discord id of event-user%} is true:
+								set {nowvol} to "%volume of event-bot%"
+								set the volume of event-bot to arg-3 parsed as int
+								create embed:
+									set title of the embed to "뮤직 ㅡ 볼륨 ( 설정됨 )"
+									set the colour of the embed to YELLOW
+									set the description of embed to "%{nowvol}% -> %volume of event-bot%"
+									set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+									reply with last created embed
+								wait 1 tick
+								delete {dc}
+								stop
+							else:
+								create embed:
+									set title of the embed to "뮤직 ㅡ 볼륨"
+									set the colour of the embed to YELLOW
+									set the description of embed to "%volume of event-bot%"
+									set the footer of embed to footer with text "KaRin Bot Engine by Rin_E_"
+									reply with last created embed
+								wait 1 tick
+								delete {dc}
+								stop
+		else:
+			add 1 to {noserver::%discord id of event-guild%}
 				
-#discord command _logout: # 이거도 주석처리해야함. 관리자 로그인 없으니까. 그래서 지금 해버림.. ㅋㅋ
+#discord command _logout: # 이거도 주석처리해야함. 관리자 로그인 없으니까. 그래서 지금 해버림.. ㅋㅋ ( 0.1.1 삭제 예정 )
 #	trigger:
 #		if {krbad::%discord id of event-user%} is "624274923455512577":
 #			delete {krbad::%discord id of event-user%}
@@ -1080,9 +1083,6 @@ On guild message received seen by "{@name}": # 진짜 메인이 되는 부분
 			stop
 		else:
 			stop
-	else if event-string contain "나에게 데이터를 달라" or "헌터야": # 0.0.1 release판에 없는건데 있던거. 빼서 쓰세요 0.0.2때 삭제
-		delete event-message with event-bot
-		stop
 	else if event-string contain "카린아 " or "krb " or "KRB " or "ㅋㄹㅇ " or "ㅋ " or "카린아?": # Main of Main
 		set {_} to event-string              # 받은 메세지를
 		set {_amount::*} to {_} split by " " # 띄어쓰기로 나누고 저장
