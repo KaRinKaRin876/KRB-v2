@@ -32,7 +32,7 @@ options:
 	# token = 카린봇 토큰
 	# name = 카린봇 이름
 	
-	token: Njg1NzE1Mzg2NzQ1ODgwNTgx.XrUxHA.nZl8XyhNiIZeRxa0nQDa24AJEJI
+	token: 'your token' # 디스코드 보안팀의 메세지로 인해 삭제되었습니다. (자동 리제너레이트되었음. 기록 확인해도 소용없음.)
 	name: KaRin Bot v2
 
 On script load:
