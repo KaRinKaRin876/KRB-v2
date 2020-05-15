@@ -1,3 +1,9 @@
 https://drive.google.com/open?id=1dpnZAKHsTfrI0osgbH4aPKQw1iZwBywo
 
 spigot은 필수로 다운로드해주세요.
+
+---------------------------------------------------------------
+
+KRB_v2.sk는 Skript 폴더가 생성되면 (서버 실행) Skript -> scripts 에다가 이동해주세요.
+
+이동하지 않으면 제대로 작동하지 않습니다.
